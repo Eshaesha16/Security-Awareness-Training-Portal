@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SafeX Security Awareness Portal</title>
+  <style>
+    :root {
+      --primary: #0f172a;
+      --accent: #2563eb;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #334155;
+      --success: #16a34a;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+
+    .progress-box {
+      background: var(--card-bg);
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      background-color: #e2e8f0;
+      border-radius: 10px;
+      height: 15px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background-color: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    .btn:hover {
+      background-color: #1d4ed8;
+    }
+
+    .options-group button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .options-group button:hover {
+      background: #e2e8f0;
+    }
+
+    .certificate {
+      border: 5px double var(--primary);
+      padding: 30px;
+      text-align: center;
+      background: #fff;
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th,
+    td {
+      border: 1px solid #cbd5e1;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f1f5f9;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>SafeX Security Awareness Training</h1>
+  </header>
+
+  <div class="container">
+    <div class="progress-box">
+      <strong>Overall Training Progress</strong>
+      <div class="progress-bar-container">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+    </div>
+
+    <!-- Active Content Area -->
+    <div id="app-content"></div>
+
+    <!-- Leaderboard -->
+    <div class="card">
+      <h3>Team Leaderboard</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Employee Name</th>
+            <th>Score</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard-rows">
+          <tr>
+            <td>Sarah Jenkins</td>
+            <td>100%</td>
+            <td>Completed</td>
+          </tr>
+          <tr>
+            <td>Alex Rivera</td>
+            <td>100%</td>
+            <td>Completed</td>
+          </tr>
+          <tr id="user-leaderboard-row">
+            <td>You (Current User)</td>
+            <td id="user-score">0%</td>
+            <td id="user-status">In Progress</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const modules = [
+      {
+        title: "Module 1: Phishing Awareness",
+        lesson: "Phishing attacks use deceptive emails/messages to trick you into revealing sensitive data. Always verify the sender's email address, look out for unexpected urgency, and never click unverified links.",
+        question: "What is the most reliable way to verify a suspicious email from your bank?",
+        options: [
+          "Reply to the email asking if it is real",
+          "Click the link provided to check the website URL",
+          "Contact the bank directly using an official phone number"
+        ],
+        answer: 2
+      },
+      {
+        title: "Module 2: Password Hygiene",
+        lesson: "Strong password security requires unique passwords for every account. Use a minimum of 12-16 characters including numbers, symbols, and mixed cases. Never reuse enterprise passwords on personal sites.",
+        question: "Which password strategy is considered the most secure?",
+        options: [
+          "Using a complex password and changing one character every month",
+          "Using a long passphrase managed through a dedicated Password Manager",
+          "Writing passwords down in an encrypted digital note on your desktop"
+        ],
+        answer: 1
+      },
+      {
+        title: "Module 3: Safe Browsing Habits",
+        lesson: "Always ensure web connections use HTTPS. Avoid downloading attachments or software from untrusted third-party platforms, and keep your browser updated to patch known vulnerabilities.",
+        question: "What does the 'HTTPS' protocol indicator in your browser address bar signify?",
+        options: [
+          "The website is 100% safe from malware",
+          "The data transferred between your browser and the site is encrypted",
+          "The website belongs to an official government agency"
+        ],
+        answer: 1
+      },
+      {
+        title: "Module 4: Social Engineering",
+        lesson: "Social engineering relies on human interaction to manipulate individuals into breaking security procedures. Examples include Tailgating into offices and Impersonation calls from 'IT Support'.",
+        question: "An unknown person wearing a badge follows you closely into a secure server room door. What should you do?",
+        options: [
+          "Hold the door open to be polite",
+          "Politely stop them and direct them to the reception/security desk",
+          "Ignore them and walk faster"
+        ],
+        answer: 1
+      }
+    ];
+
+    let currentStep = 0;
+    let userAnswers = [];
+
+    function renderStep() {
+      const app = document.getElementById("app-content");
+      const progressPercent = (currentStep / modules.length) * 100;
+      document.getElementById("progress-bar").style.width = progressPercent + "%";
+
+      if (currentStep < modules.length) {
+        const item = modules[currentStep];
+        app.innerHTML = `
+            <div class="card">
+                <h2>${item.title}</h2>
+                <p><strong>Lesson Content (NIST/CISA Guidelines):</strong></p>
+                <p>${item.lesson}</p>
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #e2e8f0;">
+                <p><strong>Assessment Quiz:</strong> ${item.question}</p>
+                <div class="options-group">
+                    ${item.options.map((opt, idx) => `<button onclick="handleAnswer(${idx})">${opt}</button>`).join('')}
+                </div>
+            </div>
+        `;
+      } else {
+        showCompletionScreen();
+      }
+    }
+
+    function handleAnswer(selectedIndex) {
+      userAnswers.push(selectedIndex);
+      currentStep++;
+      renderStep();
+    }
+
+    function showCompletionScreen() {
+      document.getElementById("progress-bar").style.width = "100%";
+      let correct = 0;
+      modules.forEach((mod, idx) => {
+        if (userAnswers[idx] === mod.answer) correct++;
+      });
+
+      const percentage = Math.round((correct / modules.length) * 100);
+      document.getElementById("user-score").innerText = percentage + "%";
+      document.getElementById("user-status").innerText = "Completed";
+
+      const app = document.getElementById("app-content");
+      app.innerHTML = `
+        <div class="card certificate">
+            <h1>Certificate of Completion</h1>
+            <p>This certifies that</p>
+            <h2>SafeX Enterprise Employee</h2>
+            <p>has successfully completed the <strong>Security Awareness Training Program</strong></p>
+            <p>Score Achieved: <strong>${percentage}%</strong></p>
+            <p><small>Standards compliant with NIST SP 800-50 & CISA Guidelines</small></p>
+            <button class="btn" onclick="location.reload()">Restart Training</button>
+        </div>
+    `;
+    }
+
+    renderStep();
+  </script>
+</body>
+
+</html>
